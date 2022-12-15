@@ -33,7 +33,7 @@ We'll call the token "NUMBER" and use a RegExp that matches one or more digits.
 MyParser.registerToken('NUMBER', /^\d+/);
 ```
 
-*When using RegExps as token matchers, it's important to start them with the '^' (Start-of-String) anchor to avoid bugs.*
+*When using RegExps as token matchers, it's important to start them with the "^" (Start-of-String) anchor to avoid bugs.*
 
 Next, we create a function that reads our "NUMBER" token and from it returns a node for our AST.
 
