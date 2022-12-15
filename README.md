@@ -8,7 +8,7 @@ The first step to building a parser is to create a new instance of Anatomize.
 
 The Anatomize constructor requires you to provide a main function that handles generating the AST (Abstract Syntax Tree) whilst parsing.
 
-```
+```javascript
 const MyParser = new Anatomize(() => {
   return {
     type: 'Program',
@@ -29,7 +29,7 @@ First, we register a token for our numeric literals to use. A token has a name s
 
 We'll call the token "NUMBER" and provide a RegExp that matches one or more digits.
 
-```
+```javascript
 MyParser.registerToken('NUMBER', /^\d+/);
 ```
 
@@ -37,7 +37,7 @@ MyParser.registerToken('NUMBER', /^\d+/);
 
 Next, we create a function that reads our "NUMBER" token and from it returns a node for our AST.
 
-```
+```javascript
 function NumLiteral() {
   const Token = Parser.read('NUMBER');
 
@@ -50,7 +50,7 @@ function NumLiteral() {
 
 Finally, we include the function we just created into our AST generation logic.
 
-```
+```javascript
 function Program() {
   return NumLiteral();
 }
@@ -58,7 +58,7 @@ function Program() {
 
 Now, try parsing a source containing only a number and see what's returned.
 
-```
+```javascript
 console.log(
   MyParser.parse('5');
 );
