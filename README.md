@@ -68,7 +68,7 @@ console.log(
 
 Increasing the difficulty slightly, let's next implement string literals into our parser.
 
-We'll again register a token, but this time using a custom Anatomize matcher.
+We'll again register a token, but this time using an Anatomize matcher.
 
 Anatomize matchers are much more powerful than RegExps. They are provided with the the following methods in the order presented here:
 
