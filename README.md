@@ -17,7 +17,7 @@ const MyParser = new Anatomize(() => {
 });
 
 function Program() {
-  //
+  
 }
 ```
 
