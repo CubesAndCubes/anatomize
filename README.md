@@ -60,6 +60,6 @@ Try parsing a source containing only a number now and see what's returned.
 
 ```javascript
 console.log(
-  MyParser.parse('5');
+  MyParser.parse('5')
 );
 ```
