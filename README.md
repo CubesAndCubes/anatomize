@@ -56,7 +56,7 @@ function Program() {
 }
 ```
 
-Now, try parsing a source containing only a number and see what's returned.
+Try parsing a source containing only a number now and see what's returned.
 
 ```javascript
 console.log(
