@@ -74,7 +74,7 @@ Anatomize matchers are much more powerful than RegExps. They are provided with t
 
 - **readChar()** : Reads the next character, adding it to the match result, and returns it.
 
-- **peekChar(offset = 0)** : Returns the next character, shifted by the provided offset.
+- **peekChar(offset = 0)** : Just returns the next character (without reading), shifted by the provided offset.
 
 - **omitChar()** : Reads the next character without adding it to the match result and returns it.
 
