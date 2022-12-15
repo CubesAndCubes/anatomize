@@ -17,7 +17,7 @@ const MyParser = new Anatomize(() => {
 });
 
 function Program() {
-  
+
 }
 ```
 
@@ -27,7 +27,7 @@ Starting off easy, we'll implement numeric literals into our parser.
 
 First, we register a token for our numeric literals to use. A token has a name string and a matcher that can either be a RegExp (Regular Expression) or a function using Anatomize's custom matching utilities. The matcher describes the token so it can be detected in the source.
 
-We'll call the token "NUMBER" and provide a RegExp that matches one or more digits.
+We'll call the token "NUMBER" and use a RegExp that matches one or more digits.
 
 ```javascript
 MyParser.registerToken('NUMBER', /^\d+/);
