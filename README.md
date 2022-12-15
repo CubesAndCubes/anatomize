@@ -4,7 +4,7 @@ Anatomize - A JavaScript-based framework for building parsers.
 
 ## Basic Setup
 
-The first step to building a parser is to create a new instance of Anatomize.
+The first step to building a parser with Anatomize is to create a new instance of it.
 
 The Anatomize constructor requires you to provide a main function that handles generating the AST (Abstract Syntax Tree) when parsing.
 
