@@ -39,7 +39,7 @@ Next, we create a function that reads our "NUMBER" token and from it returns a n
 
 ```javascript
 function NumLiteral() {
-  const Token = Parser.read('NUMBER');
+  const Token = MyParser.read('NUMBER');
 
   return {
     type: 'NumLiteral',
