@@ -277,12 +277,14 @@ MyParser.registerToken(null, /^[^\S\n]+/);
 Try parsing a source where statements are only separated by newlines now and see what happens.
 
 ```javascript
-console.log(MyParser.parse(`
-  1
-  "foo"
-  2
-  'bar'
-`));
+console.log(
+    MyParser.parse(`
+    1
+    "foo"
+    2
+    'bar'
+    `)
+);
 ```
 
 ---
