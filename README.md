@@ -284,3 +284,7 @@ console.log(MyParser.parse(`
   'bar'
 `));
 ```
+
+---
+
+This concludes the guide on the basics of Anatomize. Thank you for reading and showing interest in Anatomize!
