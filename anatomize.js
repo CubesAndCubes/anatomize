@@ -1,5 +1,5 @@
 /* Anatomize.js v1.0.0 | © 2022 CubesAndCubes */
-class Anatomize {
+export class Anatomize {
     #main;
     constructor(main) {
         if (typeof main !== 'function')
