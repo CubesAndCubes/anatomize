@@ -239,7 +239,7 @@ Finally, we'll adjust our AST generator to return a list that we fill with state
 
 ```javascript
 function Program() {
-  const SatementList = [];
+  const StatementList = [];
 
   while (!MyParser.isEOF())
     StatementList.push(Statement());
