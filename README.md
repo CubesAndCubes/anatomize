@@ -260,7 +260,7 @@ console.log(
 
 As the final chapter of this guide, we'll implement ASI (Automatic Semicolon Insertion) into our parser. It's a common feature amongst modern programming languages. Essentially, we register `\n` (newline) as a fallback token to semicolon.
 
-Anatomize's `registerHiddenToken(name, matcher)` allows you to register a special kind of token. If the `peek()` method is called on it, the token after it will be peeked instead. And, if the `read()` method is called on it expecting a type other than its, it's automatically discarded and `read()` is again executed.
+Anatomize's `registerHiddenToken(name, matcher)` allows you to register a special kind of token. If the `peek()` method is called on it, the token after it will be peeked instead. And, if the `read()` method is called on it expecting a type other than its, it's automatically discarded and `read()` is instead executed on the next token.
 
 Using this knowledge, we register a hidden token matching for newlines that's called just like our semicolon token.
 
