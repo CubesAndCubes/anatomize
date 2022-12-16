@@ -6,7 +6,7 @@ Anatomize - A JavaScript-based framework for building parsers.
 
 The first step to building a parser with Anatomize is to import it and to create a new instance of it.
 
-The Anatomize constructor requires you to provide a main function that handles generating the AST (Abstract Syntax Tree) when parsing. We use objects to represent individual nodes in the AST.
+The Anatomize constructor requires you to provide a main function that handles generating the AST (Abstract Syntax Tree). We use objects to represent individual nodes in the AST.
 
 ```javascript
 import { Anatomize } from 'anatomize.js';
@@ -23,7 +23,7 @@ function Program() {
 }
 ```
 
-Down below you'll find a guide on adding some common features to your parser. Following along will teach you the basics of Anatomize and how to structure your parser.
+Down below you'll find a guide on adding some common features to your parser. Follow along to learn the basics of Anatomize and how to structure your parser.
 
 ## Implementing Numeric Literals
 
@@ -60,7 +60,7 @@ function Program() {
 }
 ```
 
-Try parsing a source containing only a number with Anatomize's `parse(source)` method now and see what's returned.
+Try parsing a source containing only a number with Anatomize's `parse(source)` method and see what's returned.
 
 ```javascript
 console.log(
