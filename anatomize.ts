@@ -12,7 +12,7 @@ interface Token {
 	hidden: boolean;
 }
 
-class Anatomize {
+export class Anatomize {
 	#main: Function;
 
 	constructor(main: Function) {
