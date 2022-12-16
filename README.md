@@ -196,7 +196,7 @@ Unless whitespace is relevant in your language, we can remove it to make our par
 MyParser.registerToken(null, /^\s+/);
 ```
 
-Try parsing the source again now.
+Try parsing the source again now with whitespace discarded.
 
 ## Supporting A Series of Statements
 
