@@ -31,7 +31,7 @@ Down below you'll find a guide on adding some common features to your parser. Fo
 
 ## Implementing Numeric Literals
 
-Starting off easy, let's implement basic numeric literals into our parser. That'll only be simple integer numbers in this implementation.
+Starting off easy, let's implement basic numeric literals into our parser. That'll only be simple integer numbers for this implementation.
 
 First, we register a token type for our numeric literals to use. That we do with Anatomize's `registerToken(name, matcher)` method. A token has a name and a matcher that can either be a RegExp (Regular Expression) or a function using Anatomize's custom matching utilities. The matcher is a description of the token so it can be recognized in and parsed from the source.
 
@@ -80,13 +80,13 @@ We'll again register a token type, but this time using an Anatomize matcher.
 
 Anatomize matchers are much more powerful than RegExps. They are provided with the following methods in the order presented here:
 
-- `readChar()` : Reads the next character, adding it to the match result, and returns it.
+- `readChar()` : Adds the next character to the match result, discards it from the buffer, and returns it.
 
 - `peekChar(offset = 0)` : Returns the, shifted by the provided offset, next character (without reading).
 
-- `omitChar()` : Reads the next character without adding it to the match result and returns it.
+- `omitChar()` : Discards the next character from the buffer without adding it to the match result and returns it.
 
-- `isEOF()` : Returns whether or not there are more characters to read.
+- `isEOF()` : Returns whether or not there are more characters to read from the buffer.
 
 - `charAt(index)` : Returns the character at the provided index.
 
@@ -182,7 +182,7 @@ console.log(
 
 ## Discarding Whitespace
 
-Our parser, right now, will get confused by whitespace. Try parsing the following source and see what happens.
+Our parser, right now, gets confused by whitespace. Try parsing the following source and see what happens.
 
 ```javascript
 console.log(
@@ -190,7 +190,7 @@ console.log(
 );
 ```
 
-Unless whitespace is relevant in your language, we can remove it to make our parser's job a little easier. Tokens that are registered with a name of `null` are automatically discarded.
+Unless whitespace is relevant in your language, you can remove it to prevent this confusion. Tokens that are registered with a name of `null` are automatically discarded.
 
 ```javascript
 MyParser.registerToken(null, /^\s+/);
@@ -268,7 +268,7 @@ Using this knowledge, we register a hidden token matching for newlines that's ca
 MyParser.registerHiddenToken(';', /^\n+/);
 ```
 
-Since newlines have now become relevant, we need to slightly adjust our whitespace discarder to only match any whitespace except newlines.
+Since newlines have now become relevant, we need to slightly adjust our whitespace discarder to only match any whitespace other than newlines.
 
 ```javascript
 MyParser.registerToken(null, /^[^\S\n]+/);
