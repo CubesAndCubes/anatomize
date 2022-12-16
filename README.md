@@ -68,7 +68,7 @@ console.log(
 
 ## Implementing String Literals
 
-Increasing the difficulty slightly, let's next implement string literals into our parser for now.
+Increasing the difficulty slightly, let's next implement string literals into our parser.
 
 We'll again register a token type, but this time using an Anatomize matcher.
 
