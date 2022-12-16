@@ -11,7 +11,7 @@ The first step to building a parser with Anatomize is to import it and to create
 The Anatomize constructor requires you to provide a main function that handles generating the AST (Abstract Syntax Tree). We use objects to represent individual nodes in the AST.
 
 ```javascript
-import { Anatomize } from 'anatomize.js';
+import { Anatomize } from './anatomize.js';
 
 const MyParser = new Anatomize(() => {
   return {
