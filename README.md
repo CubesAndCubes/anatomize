@@ -179,3 +179,61 @@ console.log(
   MyParser.parse('"Hello, World!') // unterminated - throws error
 );
 ```
+
+## Supporting A Series of Statements
+
+As it stands, our parser only supports a source to contain a single statement. Let's change that.
+
+We first need a token for separating individual statements. As is tradition in programming languages, we'll use a `;` (semicolon).
+
+```javascript
+MyParser.registerToken(';', /^;/);
+```
+
+Now to adjusting our AST generator.
+
+Let's first introduce a new function for our statement terminator. We'll make terminating a statement optional if we determine that we've reached the end of the file. Anatomize's `isEOF()` method returns whether or not the end of the file has been reached. Its `isPeekType(type, offset = 0)` method returns whether or not the next token, shifted by the provided offset, is of the provided type.
+
+```javascript
+function terminateStatement() {
+  if (MyParser.isEOF())
+    return;
+
+  do {
+    MyParser.read(';');
+  } while (MyParser.isPeekType(';'))
+}
+```
+
+We'll also introduce a wrapper function for statements.
+
+```javascript
+function Statement() {
+  const Content = Literal();
+
+  terminateStatement();
+
+  return Content;
+}
+```
+
+Finally, we'll adjust our AST generator to return a list that we fill with statements until we reached the end of the file.
+
+```javascript
+function Program() {
+  const SatementList = [];
+
+  while (!MyParser.isEOF())
+    StatementList.push(Statement());
+
+  return StatementList;
+}
+```
+
+Try chaining together some statements now and see what happens.
+
+```javascript
+console.log(
+  MyParser.parse('1;5;"Hello, World!"')
+);
+```
