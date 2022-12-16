@@ -33,7 +33,7 @@ Down below you'll find a guide on adding some common features to your parser. Fo
 
 Starting off easy, let's implement basic numeric literals into our parser. That'll only be simple integer numbers in this implementation.
 
-First, we register a token type for our numeric literals to use. That we do with Anatomize's `registerToken(name, matcher)` method. A token has a name and a matcher that can either be a RegExp (Regular Expression) or a function using Anatomize's custom matching utilities. The matcher is a description of the token so it can be recognized in the source.
+First, we register a token type for our numeric literals to use. That we do with Anatomize's `registerToken(name, matcher)` method. A token has a name and a matcher that can either be a RegExp (Regular Expression) or a function using Anatomize's custom matching utilities. The matcher is a description of the token so it can be recognized in and parsed from the source.
 
 We'll call the token `"NUMBER"` and use a RegExp that matches one or multiple digits.
 
