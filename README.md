@@ -101,8 +101,8 @@ MyParser.registerToken('STRING', (read, peek, omit, eof, at, index) => {
 
   omit();
 
-  // read until end-of-file or same char
-  // as at index 0 (same quote as opening quote)
+  // read until end-of-file or same char as
+  // at index 0 (same quote as opening quote)
 
   while(!eof() && peek() !== at(0))
     read();
