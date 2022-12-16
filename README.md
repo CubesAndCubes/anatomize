@@ -27,6 +27,8 @@ function Program() {
 
 Down below you'll find a guide on adding some common features to your parser. Follow along to learn the basics of Anatomize and how to structure your parser.
 
+*It's recommended that you already know how parsers generally work.*
+
 ## Implementing Numeric Literals
 
 Starting off easy, let's implement basic numeric literals into our parser. That'll be simple integer numbers for now.
