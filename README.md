@@ -196,7 +196,7 @@ Unless whitespace is relevant in your language, we can remove it to make our par
 MyParser.registerToken(null, /^\s+/);
 ```
 
-Try parsing the source again now with whitespace discarded.
+Try parsing the source again now with whitespace registered as a to-be-discarded token.
 
 ## Supporting A Series of Statements
 
@@ -252,6 +252,6 @@ Try chaining together some statements now and see what happens.
 
 ```javascript
 console.log(
-  MyParser.parse('1;5;"Hello, World!"')
+  MyParser.parse('1; 5; "Hello, World!"')
 );
 ```
