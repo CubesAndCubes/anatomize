@@ -160,7 +160,7 @@ Try parsing numeric and string literals now and see what happens.
 
 ```javascript
 console.log(
-  MyParser.parse('5') // number
+  MyParser.parse('5') // integer
 );
 
 console.log(
