@@ -180,6 +180,24 @@ console.log(
 );
 ```
 
+## Discarding Whitespace
+
+Our parser, right now, will get confused by whitespace. Try parsing the following source and see what happens.
+
+```javascript
+console.log(
+  MyParser.parse(' 1 ')
+);
+```
+
+Unless whitespace is relevant in your language, we can remove it to make our parser's job a little easier. Tokens that are registered with a name of null are automatically discarded.
+
+```javascript
+MyParser.registerToken(null, /^\s+/);
+```
+
+Try parsing the source again now.
+
 ## Supporting A Series of Statements
 
 As it stands, our parser only supports a source to contain a single statement. Let's change that.
