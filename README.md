@@ -255,3 +255,32 @@ console.log(
   MyParser.parse('1; 5; "Hello, World!"')
 );
 ```
+
+## Automatic Semicolon Insertion
+
+As the final part of this guide, we'll implement ASI (Automatic Semicolon Insertion) into our parser. It's a common feature amongst modern programming languages. Essentially, we register `\n` (newline) as a fallback token to semicolon.
+
+Anatomize's `registerHiddenToken(name, matcher)` allows you to register a special kind of token. If the `peek()` method is called on it, the token after it will be peeked instead. And, if the `read()` method is called on it expecting a type other than its, it's automatically discarded and `read()` is again executed.
+
+Using this knowledge, we register a hidden token matching for newlines that's called just like our semicolon token.
+
+```javascript
+MyParser.registerHiddenToken(';', /^\n+/);
+```
+
+Since newlines have now become relevant, we need to slightly adjust our whitespace discarder to only match any whitespace except newlines.
+
+```javascript
+MyParser.registerToken(null, /^[^\S\n]+/);
+```
+
+Try parsing a source where statements are only separated by newlines now and see what happens.
+
+```javascript
+console.log(MyParser.parse(`
+  1
+  "foo"
+  2
+  'bar'
+`));
+```
