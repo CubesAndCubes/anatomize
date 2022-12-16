@@ -29,15 +29,15 @@ Starting off easy, let's implement basic numeric literals into our parser. That'
 
 First, we register a token for our numeric literals to use. That we do with Anatomize's `registerToken()` method. A token has a name and a matcher that can either be a RegExp (Regular Expression) or a function using Anatomize's custom matching utilities. The matcher is a description of the token so it can be recognized in the source.
 
-We'll call the token "NUMBER" and use a RegExp that matches one or multiple digits.
+We'll call the token `"NUMBER"` and use a RegExp that matches one or multiple digits.
 
 ```javascript
 MyParser.registerToken('NUMBER', /^\d+/);
 ```
 
-*When using RegExps as token matchers, it's important to always start them with the "^" (Start-of-String) anchor in order to avoid bugs.*
+*When using RegExps as token matchers, it's important to always start them with the `^` (Start-of-String) anchor in order to avoid bugs.*
 
-Next, we create a function that reads our "NUMBER" token and from it returns a node for our AST. Anatomize's `read()` method takes the type (name registered earlier) of the token that's to be read, and if the type equals that of the next token in the buffer, the method returns a token object containing the token's type and value (the match result) and advances the buffer to the next token. If the type is unequal, Anatomize throws an error.
+Next, we create a function that reads our `"NUMBER"` token and from it returns a node for our AST. Anatomize's `read()` method takes the type (name registered earlier) of the token that's to be read, and if the type equals that of the next token in the buffer, the method returns a token object containing the token's type and value (the match result) and advances the buffer to the next token. If the type is unequal, Anatomize throws an error.
 
 ```javascript
 function NumLiteral() {
