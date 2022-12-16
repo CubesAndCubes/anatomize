@@ -27,7 +27,7 @@ Down below you'll find a guide on adding some common features to your parser. Fo
 
 Starting off easy, let's implement basic numeric literals into our parser. That'll be simple integer numbers.
 
-First, we register a token for our numeric literals to use. That we do with Anatomize's `registerToken()` method. A token has a name and a matcher that can either be a RegExp (Regular Expression) or a function using Anatomize's custom matching utilities. The matcher is a description of the token so it can be recognized in the source.
+First, we register a token type for our numeric literals to use. That we do with Anatomize's `registerToken(name, matcher)` method. A token has a name and a matcher that can either be a RegExp (Regular Expression) or a function using Anatomize's custom matching utilities. The matcher is a description of the token so it can be recognized in the source.
 
 We'll call the token `"NUMBER"` and use a RegExp that matches one or multiple digits.
 
@@ -37,7 +37,7 @@ MyParser.registerToken('NUMBER', /^\d+/);
 
 *When using RegExps as token matchers, it's important to always start them with the `^` (Start-of-String) anchor in order to avoid bugs.*
 
-Next, we create a function that reads our `"NUMBER"` token and from it returns a node for our AST. Anatomize's `read()` method takes the type (name registered earlier) of the token that's to be read, and if the type equals that of the next token in the buffer, the method returns a token object containing the token's type and value (the match result) and advances the buffer to the next token. If the type is unequal, Anatomize throws an error.
+Next, we create a function that reads our `"NUMBER"` token and from it returns a node for our AST. Anatomize's `read(type)` method takes the type of the token that's to be read, and if the type equals that of the next token in the buffer, the method returns a token object containing the token's type and value (the match result) and advances the buffer to the next token. If the type is unequal, Anatomize throws an error.
 
 ```javascript
 function NumLiteral() {
@@ -58,7 +58,7 @@ function Program() {
 }
 ```
 
-Try parsing a source containing only a number with Anatomize's `parse()` method now and see what's returned.
+Try parsing a source containing only a number with Anatomize's `parse(source)` method now and see what's returned.
 
 ```javascript
 console.log(
@@ -74,17 +74,17 @@ We'll again register a token, but this time using an Anatomize matcher.
 
 Anatomize matchers are much more powerful than RegExps. They are provided with the following methods in the order presented here:
 
-- **readChar()** : Reads the next character, adding it to the match result, and returns it.
+- `readChar()` : Reads the next character, adding it to the match result, and returns it.
 
-- **peekChar(offset = 0)** : Returns the next character (without reading), shifted by the provided offset.
+- `peekChar(offset = 0)` : Returns the, shifted by the provided offset, next character (without reading).
 
-- **omitChar()** : Reads the next character without adding it to the match result and returns it.
+- `omitChar()` : Reads the next character without adding it to the match result and returns it.
 
-- **isEOF()** : Returns whether or not there are more characters to read.
+- `isEOF()` : Returns whether or not there are more characters to read.
 
-- **charAt(index)** : Returns the character at the provided index.
+- `charAt(index)` : Returns the character at the provided index.
 
-- **getIndex()** : Returns the current index.
+- `getIndex()` : Returns the current index.
 
 *The names of the methods can be chosen freely. What matters is the order in which they are included.*
 
@@ -131,7 +131,7 @@ function StrLiteral() {
 }
 ```
 
-Since we have two types of literals now, numeric and string, it makes sense to create a function that wraps them. Anatomize's `peek()` method returns a token object containing the next token's type and value without reading it, thus not yet advancing the buffer. `peek()` can optionally be supplied with an offset.
+Since we have two types of literals now, numeric and string, it makes sense to create a function that wraps them. Anatomize's `peek(offset = 0)` method returns a token object containing the, considering the provided offset, next token's type and value without reading it, thus not yet advancing the buffer.
 
 ```javascript
 function Literal() {
