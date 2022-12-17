@@ -1,5 +1,5 @@
 {
-  "name": "anatomize",
+  "name": "@cubesandcubes/anatomize",
   "version": "1.0.0",
   "description": "A JavaScript-based framework for building parsers",
   "type": "module",
