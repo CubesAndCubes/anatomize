@@ -4,6 +4,14 @@ Anatomize - A JavaScript-based framework for building parsers.
 
 Anatomize is licensed under version 3 of the GNU Lesser General Public License. See [COPYING](https://github.com/CubesAndCubes/anatomize/blob/master/COPYING) and [COPYING.LESSER](https://github.com/CubesAndCubes/anatomize/blob/master/COPYING.LESSER) for more details.
 
+## Installation
+
+Conveniently install Anatomize to your project through [npm](https://www.npmjs.com/package/@cubesandcubes/anatomize).
+
+```bash
+npm i @cubesandcubes/anatomize
+```
+
 ## Basic Setup
 
 The first step to building a parser with Anatomize is to import it and to create a new instance of it.
