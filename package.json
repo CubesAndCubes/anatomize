@@ -1,0 +1,24 @@
+{
+  "name": "anatomize",
+  "version": "1.0.0",
+  "description": "A JavaScript-based framework for building parsers",
+  "type": "module",
+  "main": "anatomize.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CubesAndCubes/anatomize.git"
+  },
+  "keywords": [
+    "parser",
+    "framework"
+  ],
+  "author": "CubesAndCubes",
+  "license": "LGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/CubesAndCubes/anatomize/issues"
+  },
+  "homepage": "https://github.com/CubesAndCubes/anatomize#readme"
+}
