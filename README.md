@@ -8,7 +8,7 @@ Anatomize is licensed under version 3 of the GNU Lesser General Public License. 
 
 Conveniently install Anatomize to your project through [npm](https://www.npmjs.com/package/@cubesandcubes/anatomize).
 
-```bash
+```shell
 npm i @cubesandcubes/anatomize
 ```
 
