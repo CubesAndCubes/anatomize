@@ -298,3 +298,5 @@ console.log(
 ---
 
 This concludes the guide on the basics of Anatomize. Thank you for reading and showing interest in Anatomize!
+
+The complete script of the example parser assembled in the guide can be found [here](https://github.com/CubesAndCubes/anatomize/blob/master/example.mjs).
