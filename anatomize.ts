@@ -261,7 +261,7 @@ export class Anatomize {
 	}
 
 	isPeekType(tokenType: string, offset = 0) {
-		return this.peek(offset).type === tokenType;
+		return this.peek(offset)?.type === tokenType;
 	}
 
 	read(tokenType: string) {
@@ -271,14 +271,14 @@ export class Anatomize {
 
 		do {
 			Token = this.#Tokenizer.nextToken();
-		} while (!this.isEOF() && Token.hidden && Token.type !== tokenType)
+		} while (!this.isEOF() && Token?.hidden && Token?.type !== tokenType)
 
 		if (!Token)
 			throw SyntaxError(
 				'Unexpected End of Input; Cannot read another Token'
 			);
 
-		if (Token.type !== tokenType)
+		if (Token?.type !== tokenType)
 			throw SyntaxError(
 				`Unexpected Token; Expected "${tokenType}", got "${Token.type}"`
 			);
