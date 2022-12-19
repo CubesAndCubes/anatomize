@@ -1,5 +1,5 @@
 /*
-    Anatomize.js v1.0.2 | A JavaScript-based framework for building parsers
+    Anatomize.js v1.1.0 | A JavaScript-based framework for building parsers
     Copyright (C) 2022  CubesAndCubes
 
     Anatomize is free software: you can redistribute it and/or modify
