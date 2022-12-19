@@ -90,11 +90,14 @@ export class Anatomize {
     #parsing = false;
     parse(source) {
         this.#errorIfParsing();
-        this.#Tokenizer.initialize(source);
         this.#parsing = true;
-        const RESULT = this.#main();
-        this.#parsing = false;
-        return RESULT;
+        this.#Tokenizer.initialize(source);
+        try {
+            return this.#main();
+        }
+        finally {
+            this.#parsing = false;
+        }
     }
     static #Matcher = class {
         #pattern;
