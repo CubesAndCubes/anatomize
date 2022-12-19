@@ -248,10 +248,7 @@ export class Anatomize {
 			Token = this.#Tokenizer.peekToken(offset++);
 		} while (Token?.hidden)
 
-		if (Token?.hidden)
-			return null;
-
-		return Token;
+		return Token?.hidden ? null : Token;
 	}
 
 	isEOF() {
