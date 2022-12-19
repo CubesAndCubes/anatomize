@@ -1,6 +1,6 @@
 {
   "name": "@cubesandcubes/anatomize",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "A JavaScript-based framework for building parsers",
   "type": "module",
   "main": "anatomize.js",

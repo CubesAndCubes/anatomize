@@ -1,5 +1,5 @@
 /*
-	Anatomize.js v1.0.2 | A JavaScript-based framework for building parsers
+	Anatomize.js v1.1.0 | A JavaScript-based framework for building parsers
 	Copyright (C) 2022  CubesAndCubes
 
 	Anatomize is free software: you can redistribute it and/or modify
@@ -18,7 +18,7 @@
 
 interface TokenType {
 	name: string;
-	matcher: Function | RegExp;
+	matcher: object;
 	hidden: boolean;
 }
 
@@ -65,81 +65,15 @@ export class Anatomize {
 			const INPUT = this.#buffer.slice(this.#index);
 
 			for (const TokenType of this.TokenTypes) {
-				let tokenValue: string;
-				let tokenLength: number;
+				let tokenValue: string = null;
+				let tokenLength = 0;
 
-				if (typeof TokenType.matcher === 'function') {
-					let matcherIndex = 0;
-					let matcherResult = '';
+				if (TokenType.matcher instanceof Anatomize.#Matcher) {
+					const MatchResults = TokenType.matcher.match(INPUT);
 
-					const isEOF = () => matcherIndex >= INPUT.length;
-
-					const charAt = (i: number) => INPUT[i];
-
-					const peekChar = (offset = 0) => INPUT[matcherIndex + offset];
-
-					const constraintCheck = (
-						input: string,
-						constraint: string | Array<string>,
-					) => {
-						if (Array.isArray(constraint))
-							if (constraint.includes(input))
-								return true;
-							else
-								return false;
-
-						if (String(constraint).slice(0, 1) === input)
-							return true;
-						else
-							return false;
-					};
-
-					const readChar = (constraint: string | Array<string> = null) => {
-						if (isEOF())
-							throw RangeError(
-								'Unexpected End of Input; Cannot read another Character'
-							);
-
-							if (constraint)
-								if (!constraintCheck(INPUT[matcherIndex], constraint))
-									return null;
-
-							matcherResult += INPUT[matcherIndex];
-
-							return INPUT[matcherIndex++];
-					};
-
-					const omitChar = (constraint: string = null) => {
-						if (isEOF())
-							throw RangeError(
-								'Unexpected End of Input; Cannot omit another Character'
-							);
-
-						if (constraint)
-							if (!constraintCheck(INPUT[matcherIndex], constraint))
-								return null;
-
-						return INPUT[matcherIndex++];
-					}
-
-					const getIndex = () => matcherIndex;
-
-					const MATCHER_RETURN = TokenType.matcher(
-						readChar,
-						peekChar,
-						omitChar,
-						isEOF,
-						charAt,
-						getIndex,
-					);
-
-					if ([false, null].includes(MATCHER_RETURN)) {
-						tokenValue = null;
-						tokenLength = 0;
-					}
-					else {
-						tokenValue = matcherResult || null;
-						tokenLength = matcherIndex;
+					if (![false, null].includes(MatchResults[0])) {
+						tokenValue = MatchResults[1];
+						tokenLength = MatchResults[2];
 					}
 				}
 				else if (TokenType.matcher instanceof RegExp) {
@@ -209,13 +143,98 @@ export class Anatomize {
 		return RESULT;
 	}
 
-	#addTokenType(name: string, matcher: RegExp | Function, hidden: boolean) {
+	static #Matcher = class {
+		#pattern: Function;
+		#buffer: string;
+		#index: number;
+		#result: string;
+
+		#isEOF = () => this.#index >= this.#buffer.length;
+
+		#charAt = (index: number) => this.#buffer[index];
+
+		#peekChar = (offset = 0) => this.#buffer[this.#index + offset];
+
+		static #constraintCheck = (
+			input: string,
+			constraint: string | Array<string>,
+		) => {
+			if (Array.isArray(constraint))
+				if (constraint.includes(input))
+					return true;
+				else
+					return false;
+
+			if (String(constraint).slice(0, 1) === input)
+				return true;
+			else
+				return false;
+		};
+
+		#readChar = (constraint: string | Array<string> = null) => {
+			if (this.#isEOF())
+				throw RangeError(
+					'Unexpected End of Input; Cannot read another Character'
+				);
+
+				if (constraint)
+					if (!Anatomize.#Matcher.#constraintCheck(this.#buffer[this.#index], constraint))
+						return null;
+
+				this.#result += this.#buffer[this.#index];
+
+				return this.#buffer[this.#index++];
+		};
+
+		#omitChar = (constraint: string = null) => {
+			if (this.#isEOF())
+				throw RangeError(
+					'Unexpected End of Input; Cannot omit another Character'
+				);
+
+			if (constraint)
+				if (!Anatomize.#Matcher.#constraintCheck(this.#buffer[this.#index], constraint))
+					return null;
+
+			return this.#buffer[this.#index++];
+		}
+
+		#getIndex = () => this.#index;
+
+		constructor(pattern: Function) {
+			this.#pattern = pattern;
+		}
+
+		match(input: string) {
+			this.#buffer = input;
+			this.#index = 0;
+			this.#result = '';
+
+			return [
+				this.#pattern(
+					this.#readChar,
+					this.#peekChar,
+					this.#omitChar,
+					this.#isEOF,
+					this.#charAt,
+					this.#getIndex,
+				),
+				this.#result || null,
+				this.#index,
+			];
+		}
+	}
+
+	#addTokenType(name: string, matcher: Function | object, hidden: boolean) {
 		this.#errorIfParsing();
 
 		if (typeof matcher !== 'function' && !(matcher instanceof RegExp))
 			throw TypeError(
 				`Unexpected Type of Matcher; Expected "function" or RegExp, got "${typeof matcher}"`
 			);
+
+		if (typeof matcher === 'function')
+			matcher = new Anatomize.#Matcher(matcher);
 
 		this.#Tokenizer.TokenTypes.push({
 			name,
@@ -248,10 +267,7 @@ export class Anatomize {
 			Token = this.#Tokenizer.peekToken(offset++);
 		} while (Token?.hidden)
 
-		if (Token?.hidden)
-			return null;
-
-		return Token;
+		return Token?.hidden ? null : Token;
 	}
 
 	isEOF() {
@@ -271,7 +287,7 @@ export class Anatomize {
 
 		do {
 			Token = this.#Tokenizer.nextToken();
-		} while (!this.isEOF() && Token?.hidden && Token?.type !== tokenType)
+		} while (Token?.hidden && Token?.type !== tokenType)
 
 		if (!Token)
 			throw SyntaxError(
