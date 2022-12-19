@@ -198,7 +198,7 @@ console.log(
 );
 ```
 
-Unless whitespace is relevant in your language, you can remove it to prevent this confusion. Tokens that are registered with a name of `null` are automatically discarded.
+Unless whitespace is relevant to your syntax, you can remove it to prevent this confusion. Tokens that are registered with a name of `null` are automatically discarded.
 
 ```javascript
 MyParser.registerToken(null, /^\s+/);
