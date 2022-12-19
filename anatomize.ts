@@ -132,15 +132,16 @@ export class Anatomize {
 	parse(source: string) {
 		this.#errorIfParsing();
 
-		this.#Tokenizer.initialize(source);
-
 		this.#parsing = true;
 
-		const RESULT = this.#main();
+		this.#Tokenizer.initialize(source);
 
-		this.#parsing = false;
-
-		return RESULT;
+		try {
+			return this.#main();
+		}
+		finally {
+			this.#parsing = false;
+		}
 	}
 
 	static #Matcher = class {
