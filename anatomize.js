@@ -42,51 +42,13 @@ export class Anatomize {
         #readToken() {
             const INPUT = this.#buffer.slice(this.#index);
             for (const TokenType of this.TokenTypes) {
-                let tokenValue;
-                let tokenLength;
-                if (typeof TokenType.matcher === 'function') {
-                    let matcherIndex = 0;
-                    let matcherResult = '';
-                    const isEOF = () => matcherIndex >= INPUT.length;
-                    const charAt = (i) => INPUT[i];
-                    const peekChar = (offset = 0) => INPUT[matcherIndex + offset];
-                    const constraintCheck = (input, constraint) => {
-                        if (Array.isArray(constraint))
-                            if (constraint.includes(input))
-                                return true;
-                            else
-                                return false;
-                        if (String(constraint).slice(0, 1) === input)
-                            return true;
-                        else
-                            return false;
-                    };
-                    const readChar = (constraint = null) => {
-                        if (isEOF())
-                            throw RangeError('Unexpected End of Input; Cannot read another Character');
-                        if (constraint)
-                            if (!constraintCheck(INPUT[matcherIndex], constraint))
-                                return null;
-                        matcherResult += INPUT[matcherIndex];
-                        return INPUT[matcherIndex++];
-                    };
-                    const omitChar = (constraint = null) => {
-                        if (isEOF())
-                            throw RangeError('Unexpected End of Input; Cannot omit another Character');
-                        if (constraint)
-                            if (!constraintCheck(INPUT[matcherIndex], constraint))
-                                return null;
-                        return INPUT[matcherIndex++];
-                    };
-                    const getIndex = () => matcherIndex;
-                    const MATCHER_RETURN = TokenType.matcher(readChar, peekChar, omitChar, isEOF, charAt, getIndex);
-                    if ([false, null].includes(MATCHER_RETURN)) {
-                        tokenValue = null;
-                        tokenLength = 0;
-                    }
-                    else {
-                        tokenValue = matcherResult || null;
-                        tokenLength = matcherIndex;
+                let tokenValue = null;
+                let tokenLength = 0;
+                if (TokenType.matcher instanceof Anatomize.#Matcher) {
+                    const MatchResults = TokenType.matcher.match(INPUT);
+                    if (![false, null].includes(MatchResults[0])) {
+                        tokenValue = MatchResults[1];
+                        tokenLength = MatchResults[2];
                     }
                 }
                 else if (TokenType.matcher instanceof RegExp) {
@@ -134,10 +96,63 @@ export class Anatomize {
         this.#parsing = false;
         return RESULT;
     }
+    static #Matcher = class {
+        #pattern;
+        #buffer;
+        #index;
+        #result;
+        #isEOF = () => this.#index >= this.#buffer.length;
+        #charAt = (index) => this.#buffer[index];
+        #peekChar = (offset = 0) => this.#buffer[this.#index + offset];
+        static #constraintCheck = (input, constraint) => {
+            if (Array.isArray(constraint))
+                if (constraint.includes(input))
+                    return true;
+                else
+                    return false;
+            if (String(constraint).slice(0, 1) === input)
+                return true;
+            else
+                return false;
+        };
+        #readChar = (constraint = null) => {
+            if (this.#isEOF())
+                throw RangeError('Unexpected End of Input; Cannot read another Character');
+            if (constraint)
+                if (!Anatomize.#Matcher.#constraintCheck(this.#buffer[this.#index], constraint))
+                    return null;
+            this.#result += this.#buffer[this.#index];
+            return this.#buffer[this.#index++];
+        };
+        #omitChar = (constraint = null) => {
+            if (this.#isEOF())
+                throw RangeError('Unexpected End of Input; Cannot omit another Character');
+            if (constraint)
+                if (!Anatomize.#Matcher.#constraintCheck(this.#buffer[this.#index], constraint))
+                    return null;
+            return this.#buffer[this.#index++];
+        };
+        #getIndex = () => this.#index;
+        constructor(pattern) {
+            this.#pattern = pattern;
+        }
+        match(input) {
+            this.#buffer = input;
+            this.#index = 0;
+            this.#result = '';
+            return [
+                this.#pattern(this.#readChar, this.#peekChar, this.#omitChar, this.#isEOF, this.#charAt, this.#getIndex),
+                this.#result || null,
+                this.#index,
+            ];
+        }
+    };
     #addTokenType(name, matcher, hidden) {
         this.#errorIfParsing();
         if (typeof matcher !== 'function' && !(matcher instanceof RegExp))
             throw TypeError(`Unexpected Type of Matcher; Expected "function" or RegExp, got "${typeof matcher}"`);
+        if (typeof matcher === 'function')
+            matcher = new Anatomize.#Matcher(matcher);
         this.#Tokenizer.TokenTypes.push({
             name,
             matcher,
@@ -160,9 +175,7 @@ export class Anatomize {
         do {
             Token = this.#Tokenizer.peekToken(offset++);
         } while (Token?.hidden);
-        if (Token?.hidden)
-            return null;
-        return Token;
+        return Token?.hidden ? null : Token;
     }
     isEOF() {
         this.#errorIfNotParsing();
@@ -176,7 +189,7 @@ export class Anatomize {
         let Token;
         do {
             Token = this.#Tokenizer.nextToken();
-        } while (!this.isEOF() && Token?.hidden && Token?.type !== tokenType);
+        } while (Token?.hidden && Token?.type !== tokenType);
         if (!Token)
             throw SyntaxError('Unexpected End of Input; Cannot read another Token');
         if (Token?.type !== tokenType)
