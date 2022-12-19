@@ -271,7 +271,7 @@ export class Anatomize {
 
 		do {
 			Token = this.#Tokenizer.nextToken();
-		} while (!this.isEOF() && Token?.hidden && Token?.type !== tokenType)
+		} while (Token?.hidden && Token?.type !== tokenType)
 
 		if (!Token)
 			throw SyntaxError(
